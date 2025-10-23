@@ -30,5 +30,27 @@ legend("topleft", legend=c("GDP","Trend"),
 col=c("black","#066462"), lty=1, lwd=2, bty="n")
 plot(x, type="l", col="blue", lwd=2)
 abline(h=0, col="red", lty=2)
+
+Bollinger bonds
+
+library(quantmod)
+
+ticker <- "APLD"                              # APLD არის Ticker ანუ დახლოებით აქციის საიდენტიფიკაციო კოდია მაგალითად Tesla_სი არის TSLA. Tesla stock დაგუგლე და მიხვდები
+start_date <- "2025-08-01"   # საწყისი თარიღი აქციის რომელიც გაინტერესებს, ამ აქციის ფასს იწერ yahoo finance_დან და შეგიძლია შეცვალო თუ რომელი თრიღიდან გინდა ჩამოტვირთო 
+end_date <- Sys.Date()       # Sys.Date() არის რომელი დღით გინდა დასრულდეს მონაცემები და ეს დღვანდელით დაასრულებს და თუ სხვა თარიღით გინდა დასრულდეს მაგ "2025-08-01" შეცვლი ამით
+
+getSymbols(ticker, src = "yahoo", from = start_date, to = end_date)
+
+
+data <- get(ticker)  
+chartSeries(data,
+type = "candlesticks",
+subset = paste0(start_date, "::", end_date),
+theme = chartTheme("white"),
+name = ticker)
+
+
+addBBands(n = 20, sd = 2, maType = "SMA", on = 1)         # n არის დღეების რაოდენობა 20 დღის მოძრავი საშვალო მაგალითად ამ შემთხვევაში და sd არის standard deviation, მაგრამ ამ შემთხვევაში sd = 2 არ ნიშნავს რომ standard deviation = 2, ეს ნიშნავს  20 დღის standard deviation გავამრავლოთ ორზე. მაღლითა საზღვრის ფორმულა არის SMA + sd * 2, დაბლითა საზღვრის ფორმულა არის SMA - sd * 2
+
                                                
                            
